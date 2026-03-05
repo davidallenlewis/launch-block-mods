@@ -181,6 +181,8 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			if ( highlightedColumn ) {
 				const color = highlightedColumnColor || '#eef8ea';
 				rules.push( `[data-block="${ clientId }"] table td:nth-child(${ highlightedColumn }) { background-color: ${ color }; }` );
+				rules.push( `[data-block="${ clientId }"] table thead th:nth-child(${ highlightedColumn }) { display: flex; flex-direction: column; border: none; }` );
+				rules.push( `[data-block="${ clientId }"] table thead th:nth-child(${ highlightedColumn })::before { content: "Best Value"; background-color: yellow; align-self: center; padding: 2px 8px; border-radius: 9999px; font-size: 0.8rem; margin-bottom: var(--wp--preset--spacing--en-space); text-transform: none; letter-spacing: .025em; }` );
 			}
 			style.textContent = rules.join( '\n' );
 			return () => style.remove();
