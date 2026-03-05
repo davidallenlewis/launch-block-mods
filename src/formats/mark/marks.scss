@@ -1,0 +1,22 @@
+@font-face {
+	font-family: 'icomoon';
+	src: url( './fonts/icomoon.woff' ) format( 'woff' ),
+		url( './fonts/icomoon.ttf' ) format( 'truetype' );
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+.block-mods-mark {
+	font-family: 'icomoon' !important;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	speak: never;
+	&:not([data-mark="dash"]) {
+		border: 1px solid currentColor;
+		border-radius: 9999px;
+		background-color: color-mix( in srgb, currentColor 15%, transparent );
+	}
+}

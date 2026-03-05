@@ -1,7 +1,7 @@
 {
   "name": "block-mods",
   "version": "0.1.0",
-  "author": "YOUR NAME HERE",
+  "author": "Swinmark Consulting",
   "scripts": {
     "build": "wp-scripts build",
     "format:js": "wp-scripts format-js",
@@ -13,21 +13,12 @@
     "packages-update": "wp-scripts packages-update",
     "start": "wp-scripts start"
   },
+  "overrides": {
+    "ajv": "^8.8.2"
+  },
   "devDependencies": {
-    "@10up/eslint-config": "^2.2.0",
-    "@wordpress/scripts": "^13.0.2",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.19.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsdoc": "^22.2.0",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^1.7.0",
-    "prettier": "^2.2.1"
+    "@wordpress/icons": "^11.8.0",
+    "@wordpress/scripts": "^31.6.0"
   },
   "dependencies": {
     "classnames": "^2.2.6"
