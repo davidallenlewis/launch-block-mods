@@ -205,7 +205,7 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			<Fragment>
 				<BlockEdit { ...props } />
 				<InspectorControls group="styles">
-					<PanelBody title={ __( 'Advanced Table Styles', 'block-mods' ) } initialOpen={ true }>
+					<PanelBody title={ __( 'Table Colors', 'block-mods' ) } initialOpen={ true }>
 						<SelectControl
 							label={ __( 'Highlight Column', 'block-mods' ) }
 							help={ __( 'Choose a column to highlight.', 'block-mods' ) }
@@ -215,7 +215,7 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 						/>
 						<ColorDropdown 
 							position="first"
-							label={ __( 'Header Background', 'block-mods' ) }
+							label={ __( 'Header Row', 'block-mods' ) }
 							value={ headerBackgroundColor }
 							onClear={ () => setAttributes( { headerBackgroundColor: '#5cba47' } ) }
 							renderContent={ () => (
@@ -228,7 +228,7 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 						/>
 						<ColorDropdown
 							position={ highlightedColumn ? 'middle' : 'last' }
-							label={ __( 'First Column Background', 'block-mods' ) }
+							label={ __( 'First Column', 'block-mods' ) }
 							value={ firstColumnBackgroundColor }
 							onClear={ () => setAttributes( { firstColumnBackgroundColor: '#f6f6f6' } ) }
 							renderContent={ () => (
@@ -242,7 +242,7 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 						{ highlightedColumn && (
 							<ColorDropdown
 								position="last"
-								label={ __( 'Highlight Background', 'block-mods' ) }
+								label={ __( 'Highlight Column', 'block-mods' ) }
 								value={ highlightedColumnColor }
 								onClear={ () => setAttributes( { highlightedColumnColor: '#eef8ea' } ) }
 								renderContent={ () => (

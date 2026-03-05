@@ -48,4 +48,4 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\frontend_assets' );
  * Block render filters
  */
 require_once plugin_dir_path( __FILE__ ) . 'render/heading-attributes.php';
-require_once plugin_dir_path( __FILE__ ) . 'render/table-column-highlight.php';
+require_once plugin_dir_path( __FILE__ ) . 'render/table-colours.php';

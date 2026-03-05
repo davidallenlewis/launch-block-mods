@@ -7,5 +7,5 @@ import './filters/buttons-spacing';
 import './filters/column-spacing';
 import './filters/columns-padding';
 import './filters/heading-attributes';
-import './filters/table-column-highlight';
+import './filters/table-colours';
 import './formats';
