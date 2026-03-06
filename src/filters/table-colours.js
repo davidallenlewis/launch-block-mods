@@ -117,9 +117,9 @@ function addAttributes( settings, name ) {
 			attributes: {
 				...settings.attributes,
 				highlightedColumn: { type: 'string', default: '' },
-				highlightedColumnColor: { type: 'string', default: '#eef8ea' },
-				headerBackgroundColor: { type: 'string', default: '#5cba47' },
-				firstColumnBackgroundColor: { type: 'string', default: '#f6f6f6' },
+				highlightedColumnColor: { type: 'string', default: '' },
+				headerBackgroundColor: { type: 'string', default: '' },
+				firstColumnBackgroundColor: { type: 'string', default: '' },
 			},
 		};
 	}
@@ -149,13 +149,17 @@ const addBlockProps = createHigherOrderComponent( ( BlockListBlock ) => {
 			'data-table-colors': '',
 			style: {
 				...props.wrapperProps?.style,
-				'--table-header-bg': headerBackgroundColor,
-				'--table-header-color': contrast( headerBackgroundColor ),
-				'--table-first-col-bg': firstColumnBackgroundColor,
-				'--table-first-col-color': contrast( firstColumnBackgroundColor ),
-				...( highlightedColumn ? {
-					'--table-highlight-col-bg': highlightedColumnColor || '#eef8ea',
-					'--table-highlight-col-color': contrast( highlightedColumnColor || '#eef8ea' ),
+				...( headerBackgroundColor ? {
+					'--table-header-bg': headerBackgroundColor,
+					'--table-header-color': contrast( headerBackgroundColor ),
+				} : {} ),
+				...( firstColumnBackgroundColor ? {
+					'--table-first-col-bg': firstColumnBackgroundColor,
+					'--table-first-col-color': contrast( firstColumnBackgroundColor ),
+				} : {} ),
+				...( highlightedColumn && highlightedColumnColor ? {
+					'--table-highlight-col-bg': highlightedColumnColor,
+					'--table-highlight-col-color': contrast( highlightedColumnColor ),
 				} : {} ),
 			},
 			...( highlightedColumn ? { 'data-highlight-col': highlightedColumn } : {} ),
@@ -182,7 +186,11 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 		} = props;
 
 		const themeColors = useSelect( ( select ) => {
-			return select( 'core/block-editor' ).getSettings()?.colors ?? [];
+			const colors = select( 'core/block-editor' ).getSettings()?.colors ?? [];
+			return [
+				{ name: __( 'Light Green', 'block-mods' ), color: '#eef8ea', slug: 'light-green' },
+				...colors,
+			];
 		}, [] );
 
 		if ( name !== 'core/table' ) {
@@ -220,12 +228,12 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 							position="first"
 							label={ __( 'Header Row', 'block-mods' ) }
 							value={ headerBackgroundColor }
-							onClear={ () => setAttributes( { headerBackgroundColor: '#5cba47' } ) }
+							onClear={ () => setAttributes( { headerBackgroundColor: '' } ) }
 							renderContent={ () => (
 								<ColorPalette
 									colors={ themeColors }
 									value={ headerBackgroundColor }
-									onChange={ ( value ) => setAttributes( { headerBackgroundColor: value ?? '#5cba47' } ) }
+									onChange={ ( value ) => setAttributes( { headerBackgroundColor: value ?? '' } ) }
 								/>
 							) }
 						/>
@@ -233,12 +241,12 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 							position={ highlightedColumn ? 'middle' : 'last' }
 							label={ __( 'First Column', 'block-mods' ) }
 							value={ firstColumnBackgroundColor }
-							onClear={ () => setAttributes( { firstColumnBackgroundColor: '#f6f6f6' } ) }
+							onClear={ () => setAttributes( { firstColumnBackgroundColor: '' } ) }
 							renderContent={ () => (
 								<ColorPalette
 									colors={ themeColors }
 									value={ firstColumnBackgroundColor }
-									onChange={ ( value ) => setAttributes( { firstColumnBackgroundColor: value ?? '#f6f6f6' } ) }
+									onChange={ ( value ) => setAttributes( { firstColumnBackgroundColor: value ?? '' } ) }
 								/>
 							) }
 						/>
@@ -247,12 +255,12 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 								position="last"
 								label={ __( 'Highlight Column', 'block-mods' ) }
 								value={ highlightedColumnColor }
-								onClear={ () => setAttributes( { highlightedColumnColor: '#eef8ea' } ) }
+								onClear={ () => setAttributes( { highlightedColumnColor: '' } ) }
 								renderContent={ () => (
 									<ColorPalette
 										colors={ themeColors }
 										value={ highlightedColumnColor }
-										onChange={ ( value ) => setAttributes( { highlightedColumnColor: value ?? '#eef8ea' } ) }
+										onChange={ ( value ) => setAttributes( { highlightedColumnColor: value ?? '' } ) }
 									/>
 								) }
 							/>

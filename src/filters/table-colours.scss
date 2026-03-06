@@ -1,5 +1,9 @@
 // CSS custom properties are set as inline styles on the <figure> element
 [data-table-colors] {
+	thead {
+		background-color: var(--table-header-bg);
+		color: var(--table-header-color);
+	}
 	thead th {
 		background-color: var(--table-header-bg);
 		color: var(--table-header-color);
@@ -14,25 +18,15 @@
 				background-color: var(--table-highlight-col-bg);
 				color: var(--table-highlight-col-color);
 			}
-
 			table thead th:nth-child(#{$i}) {
-				display: flex;
-				flex-direction: column;
-				border: none;
-
-				&::before {
-					content: "Best Value";
-					color: black;
-					background-color: #f4e501;
-					align-self: center;
-					padding: 2px 8px;
-					border-radius: 9999px;
-					font-size: 0.8rem;
-					margin-bottom: var(--wp--preset--spacing--en-space);
-					text-transform: none;
-					letter-spacing: 0.025em;
-				}
+				background-color: var(--table-highlight-col-bg);
+				color: var(--table-highlight-col-color);
 			}
 		}
+	}
+	.best-value-badge {
+		font-size: 0.8rem;
+		text-transform: none;
+		letter-spacing: 0.025em;
 	}
 }
