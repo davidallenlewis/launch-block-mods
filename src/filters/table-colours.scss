@@ -18,12 +18,18 @@
 				background-color: var(--table-highlight-col-bg);
 				color: var(--table-highlight-col-color);
 			}
+			thead tr th:nth-child(#{$i})::before {
+				content: "Best Value\A";
+				white-space: pre-wrap;
+				color: black;
+				background-color: #f4e501;
+				padding: 2px 8px;
+				border-radius: 9999px;
+				font-size: 0.8rem;
+				text-transform: none;
+				letter-spacing: 0.025em;
+				line-height: 2.5;
+			}
 		}
-	}
-	.best-value-badge {
-		display: inline-block;
-		margin-bottom: .5em;
-		font-size: 0.875rem;
-		text-transform: none;
 	}
 }

@@ -12,7 +12,6 @@ import {
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
 } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
-import { useEffect } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 
 if ( ! document.getElementById( 'color-dropdown-styles' ) ) {
@@ -143,29 +142,6 @@ const addBlockProps = createHigherOrderComponent( ( BlockListBlock ) => {
 		}
 
 		const { highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor } = attributes;
-
-		useEffect( () => {
-			const blockEl = document.getElementById( `block-${ clientId }` );
-			if ( ! blockEl ) return;
-
-			blockEl.querySelectorAll( '.best-value-badge' ).forEach( ( el ) => {
-				el.nextSibling?.nodeName === 'BR' && el.nextSibling.remove();
-				el.remove();
-			} );
-
-			if ( ! highlightedColumn ) return;
-
-			const col = parseInt( highlightedColumn, 10 );
-			const th = blockEl.querySelector( `thead tr th:nth-child(${ col })` );
-			if ( ! th ) return;
-
-			const br = document.createElement( 'br' );
-			const badge = document.createElement( 'span' );
-			badge.className = 'best-value-badge';
-			badge.textContent = 'Best Value';
-			th.prepend( br );
-			th.prepend( badge );
-		}, [ clientId, highlightedColumn ] );
 
 		const contrast = ( bg ) => `oklch(from ${ bg } calc((0.7 - l) * infinity) 0 0)`;
 		const wrapperProps = {

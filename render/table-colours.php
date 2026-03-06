@@ -70,14 +70,6 @@ function add_party_table_highlight( $block_content = '', $block = [] ) {
 
 	$html = $processor->get_updated_html();
 
-	if ( $col ) {
-		$html = preg_replace(
-			'/(<th\b[^>]*\bis-highlighted-col-header\b[^>]*>)(.*?)(<\/th>)/is',
-			'$1<span class="best-value-badge">Best Value</span><br>$2$3',
-			$html
-		);
-	}
-
 	return $html;
 }
 add_filter( 'render_block', __NAMESPACE__ . '\add_party_table_highlight', 10, 2 );
