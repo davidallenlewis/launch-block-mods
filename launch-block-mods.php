@@ -1,10 +1,10 @@
 <?php
 /**
- * Plugin Name: Block Modifications
+ * Plugin Name: Launch Block Modifications
  * Description: A plugin that modifies and extends native Gutenberg Block functionality
- * Author:      Media Mechanics
- * Author URI:  https://mediamechanics.com
- * Version:     1.0
+ * Author:      Swinmark Consulting
+ * Author URI:  https://swinmark-consulting.com/
+ * Version:     1.0.1
  *
  * @package     BlockMods
  */

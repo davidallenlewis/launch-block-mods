@@ -1,21 +1,26 @@
+import { assign, merge } from 'lodash';
+import { __ } from '@wordpress/i18n';
+import { addFilter } from '@wordpress/hooks';
+import { createHigherOrderComponent } from '@wordpress/compose';
 import {
 	SelectControl,
 	ColorPalette,
 	Button,
 	Dropdown,
 	Tooltip,
+	PanelBody,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
 } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
+import { Fragment, useEffect } from '@wordpress/element';
+import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
-const { assign, merge } = lodash;
-const { __ } = wp.i18n;
-const { addFilter } = wp.hooks;
-const { createHigherOrderComponent } = wp.compose;
-const { Fragment } = wp.element;
-const { InspectorControls } = wp.blockEditor;
-const { PanelBody } = wp.components;
+if ( ! document.getElementById( 'color-dropdown-styles' ) ) {
+	const s = document.createElement( 'style' );
+	s.id = 'color-dropdown-styles';
+	s.textContent = '.color-dropdown-wrap .color-dropdown-clear{opacity:0;pointer-events:none;transition:opacity 0.1s ease}.color-dropdown-wrap:hover .color-dropdown-clear{opacity:1;pointer-events:auto}';
+	document.head.appendChild( s );
+}
 
 const MinusIcon = () => (
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
@@ -24,9 +29,7 @@ const MinusIcon = () => (
 );
 
 function ColorDropdown( { label, value, renderContent, onClear = null, position = null } ) {
-	const [ hovered, setHovered ] = useState( false );
 	const showClear = onClear && !! value;
-
 	const borderRadius =
 		position === 'first' ? '2px 2px 0 0' :
 		position === 'last'  ? '0 0 2px 2px' :
@@ -35,9 +38,8 @@ function ColorDropdown( { label, value, renderContent, onClear = null, position 
 
 	return (
 		<div
+			className="color-dropdown-wrap"
 			style={ { position: 'relative', display: 'block' } }
-			onMouseEnter={ () => setHovered( true ) }
-			onMouseLeave={ () => setHovered( false ) }
 		>
 			<Dropdown
 				style={ { display: 'block' } }
@@ -52,8 +54,8 @@ function ColorDropdown( { label, value, renderContent, onClear = null, position 
 							padding: '10px 12px',
 							paddingRight: showClear ? '36px' : '12px',
 							border: '1px solid #ddd',
-						borderBottom,
-						borderRadius,
+							borderBottom,
+							borderRadius,
 							boxSizing: 'border-box',
 							textAlign: 'left',
 						} }
@@ -85,6 +87,7 @@ function ColorDropdown( { label, value, renderContent, onClear = null, position 
 						icon={ MinusIcon }
 						aria-label={ __( 'Reset', 'block-mods' ) }
 						onClick={ ( e ) => { e.stopPropagation(); onClear(); } }
+						className="color-dropdown-clear"
 						style={ {
 							position: 'absolute',
 							right: '2px',
@@ -92,9 +95,6 @@ function ColorDropdown( { label, value, renderContent, onClear = null, position 
 							transform: 'translateY(-50%)',
 							minWidth: 0,
 							padding: '2px',
-							opacity: hovered ? 1 : 0,
-							transition: 'opacity 0.1s ease',
-							pointerEvents: hovered ? 'auto' : 'none',
 						} }
 						size="small"
 					/>
