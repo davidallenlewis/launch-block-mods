@@ -1,4 +1,3 @@
-import { assign, merge } from 'lodash';
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -11,7 +10,7 @@ import {
 	PanelBody,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
 } from '@wordpress/components';
-import { Fragment, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
@@ -113,26 +112,16 @@ function ColorDropdown( { label, value, renderContent, onClear = null, position 
  */
 function addAttributes( settings, name ) {
 	if ( name === 'core/table' ) {
-		return assign( {}, settings, {
-			attributes: merge( settings.attributes, {
-				highlightedColumn: {
-					type: 'string',
-					default: '',
-				},
-				highlightedColumnColor: {
-					type: 'string',
-					default: '#eef8ea',
-				},
-				headerBackgroundColor: {
-					type: 'string',
-					default: '#5cba47',
-				},
-				firstColumnBackgroundColor: {
-					type: 'string',
-					default: '#f6f6f6',
-				},
-			} ),
-		} );
+		return {
+			...settings,
+			attributes: {
+				...settings.attributes,
+				highlightedColumn: { type: 'string', default: '' },
+				highlightedColumnColor: { type: 'string', default: '#eef8ea' },
+				headerBackgroundColor: { type: 'string', default: '#5cba47' },
+				firstColumnBackgroundColor: { type: 'string', default: '#f6f6f6' },
+			},
+		};
 	}
 	return settings;
 }
@@ -154,15 +143,11 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			clientId,
 		} = props;
 
-		if ( name !== 'core/table' ) {
-			return <BlockEdit { ...props } />;
-		}
-
 		const themeColors = useSelect( ( select ) => {
 			return select( 'core/block-editor' ).getSettings()?.colors ?? [];
 		}, [] );
 
-		// Inject a scoped <style> tag so the editor matches the front end
+		// Inject a scoped <style> tag so editor matches front end
 		useEffect( () => {
 			const styleId = `table-column-highlight-${ clientId }`;
 			let style = document.getElementById( styleId );
@@ -188,6 +173,10 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			return () => style.remove();
 		}, [ highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor, clientId ] );
 
+		if ( name !== 'core/table' ) {
+			return <BlockEdit { ...props } />;
+		}
+
 		// Determine column count from head or body
 		const firstRow =
 			( head && head[ 0 ]?.cells ) ||
@@ -203,11 +192,11 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			} ) ),
 		];
 
-		return (
-			<Fragment>
-				<BlockEdit { ...props } />
-				<InspectorControls group="styles">
-					<PanelBody title={ __( 'Table Colors', 'block-mods' ) } initialOpen={ true }>
+			return (
+				<>
+					<BlockEdit { ...props } />
+					<InspectorControls group="styles">
+						<PanelBody title={ __( 'Table Colors', 'block-mods' ) }>
 						<SelectControl
 							label={ __( 'Highlight Column', 'block-mods' ) }
 							help={ __( 'Choose a column to highlight.', 'block-mods' ) }
@@ -215,7 +204,7 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 							options={ options }
 							onChange={ ( value ) => setAttributes( { highlightedColumn: value } ) }
 						/>
-						<ColorDropdown 
+						<ColorDropdown
 							position="first"
 							label={ __( 'Header Row', 'block-mods' ) }
 							value={ headerBackgroundColor }
@@ -256,10 +245,10 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 								) }
 							/>
 						) }
-					</PanelBody>
-				</InspectorControls>
-			</Fragment>
-		);
+						</PanelBody>
+					</InspectorControls>
+				</>
+			);
 	};
 }, 'withInspectorControl' );
 addFilter(
@@ -267,7 +256,3 @@ addFilter(
 	'block-mods/table-block/add-custom-controls',
 	addInspectorControl,
 );
-
-
-
-

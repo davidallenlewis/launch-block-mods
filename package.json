@@ -11,7 +11,7 @@
     "lint:md:js": "wp-scripts lint-md-js",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "packages-update": "wp-scripts packages-update",
-	"plugin-zip": "npm run build && zip -r ~/Desktop/launch-block-mods.zip build includes render launch-block-mods.php",
+    "plugin-zip": "npm run build && zip -r ~/Desktop/launch-block-mods.zip build includes render launch-block-mods.php",
     "start": "wp-scripts start"
   },
   "overrides": {
