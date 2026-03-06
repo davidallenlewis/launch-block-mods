@@ -143,14 +143,20 @@ const addBlockProps = createHigherOrderComponent( ( BlockListBlock ) => {
 
 		const { highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor } = attributes;
 
+		const contrast = ( bg ) => `oklch(from ${ bg } calc((0.7 - l) * infinity) 0 0)`;
 		const wrapperProps = {
 			...props.wrapperProps,
 			'data-table-colors': '',
 			style: {
 				...props.wrapperProps?.style,
 				'--table-header-bg': headerBackgroundColor,
+				'--table-header-color': contrast( headerBackgroundColor ),
 				'--table-first-col-bg': firstColumnBackgroundColor,
-				...( highlightedColumn ? { '--table-highlight-col-bg': highlightedColumnColor || '#eef8ea' } : {} ),
+				'--table-first-col-color': contrast( firstColumnBackgroundColor ),
+				...( highlightedColumn ? {
+					'--table-highlight-col-bg': highlightedColumnColor || '#eef8ea',
+					'--table-highlight-col-color': contrast( highlightedColumnColor || '#eef8ea' ),
+				} : {} ),
 			},
 			...( highlightedColumn ? { 'data-highlight-col': highlightedColumn } : {} ),
 		};

@@ -25,9 +25,11 @@ function add_party_table_highlight( $block_content = '', $block = [] ) {
 	$header_color    = sanitize_hex_color( $block['attrs']['headerBackgroundColor'] ?? '#5cba47' );
 	$first_col_color = sanitize_hex_color( $block['attrs']['firstColumnBackgroundColor'] ?? '#f6f6f6' );
 
-	$css_vars = '--table-header-bg:' . $header_color . ';--table-first-col-bg:' . $first_col_color;
+	$contrast   = fn( $bg ) => 'oklch(from ' . $bg . ' calc((0.7 - l) * infinity) 0 0)';
+	$css_vars   = '--table-header-bg:' . $header_color . ';--table-header-color:' . $contrast( $header_color )
+		. ';--table-first-col-bg:' . $first_col_color . ';--table-first-col-color:' . $contrast( $first_col_color );
 	if ( $col && $col_color ) {
-		$css_vars .= ';--table-highlight-col-bg:' . $col_color;
+		$css_vars .= ';--table-highlight-col-bg:' . $col_color . ';--table-highlight-col-color:' . $contrast( $col_color );
 	}
 
 	$processor   = new \WP_HTML_Tag_Processor( $block_content );

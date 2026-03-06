@@ -2,17 +2,17 @@
 [data-table-colors] {
 	thead th {
 		background-color: var(--table-header-bg);
-		color: oklch(from var(--table-header-bg) calc((0.7 - l) * infinity) 0 0);
+		color: var(--table-header-color);
 	}
 	td:first-child {
 		background-color: var(--table-first-col-bg);
-		color: oklch(from var(--table-first-col-bg) calc((0.7 - l) * infinity) 0 0);
+		color: var(--table-first-col-color);
 	}
 	@for $i from 1 through 10 {
 		&[data-highlight-col="#{$i}"] {
 			table tbody td:nth-child(#{$i}) {
 				background-color: var(--table-highlight-col-bg);
-				color: oklch(from var(--table-highlight-col-bg) calc((0.7 - l) * infinity) 0 0);
+				color: var(--table-highlight-col-color);
 			}
 
 			table thead th:nth-child(#{$i}) {
