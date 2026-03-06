@@ -18,15 +18,12 @@
 				background-color: var(--table-highlight-col-bg);
 				color: var(--table-highlight-col-color);
 			}
-			table thead th:nth-child(#{$i}) {
-				background-color: var(--table-highlight-col-bg);
-				color: var(--table-highlight-col-color);
-			}
 		}
 	}
 	.best-value-badge {
-		font-size: 0.8rem;
+		display: inline-block;
+		margin-bottom: .5em;
+		font-size: 0.875rem;
 		text-transform: none;
-		letter-spacing: 0.025em;
 	}
 }
