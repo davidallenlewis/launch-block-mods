@@ -14,8 +14,6 @@
 	font-variant: normal;
 	text-transform: none;
 	vertical-align: middle;
-	display: inline-flex;
-	line-height: 1;
 	speak: never;
 	&:not([data-mark="dash"]) {
 		border: 1px solid currentColor;

@@ -1,0 +1,38 @@
+// CSS custom properties are set as inline styles on the <figure> element
+[data-table-colors] {
+	thead th {
+		background-color: var(--table-header-bg);
+		color: oklch(from var(--table-header-bg) calc((0.7 - l) * infinity) 0 0);
+	}
+	td:first-child {
+		background-color: var(--table-first-col-bg);
+		color: oklch(from var(--table-first-col-bg) calc((0.7 - l) * infinity) 0 0);
+	}
+	@for $i from 1 through 10 {
+		&[data-highlight-col="#{$i}"] {
+			table tbody td:nth-child(#{$i}) {
+				background-color: var(--table-highlight-col-bg);
+				color: oklch(from var(--table-highlight-col-bg) calc((0.7 - l) * infinity) 0 0);
+			}
+
+			table thead th:nth-child(#{$i}) {
+				display: flex;
+				flex-direction: column;
+				border: none;
+
+				&::before {
+					content: "Best Value";
+					color: black;
+					background-color: #f4e501;
+					align-self: center;
+					padding: 2px 8px;
+					border-radius: 9999px;
+					font-size: 0.8rem;
+					margin-bottom: var(--wp--preset--spacing--en-space);
+					text-transform: none;
+					letter-spacing: 0.025em;
+				}
+			}
+		}
+	}
+}

@@ -1,3 +1,4 @@
+import './table-colours.scss';
 import { __ } from '@wordpress/i18n';
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
@@ -10,7 +11,6 @@ import {
 	PanelBody,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
 } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
 import { InspectorControls } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 
@@ -132,6 +132,39 @@ addFilter(
 );
 
 /**
+ * Set CSS custom properties and data attributes on the block wrapper
+ */
+const addBlockProps = createHigherOrderComponent( ( BlockListBlock ) => {
+	return ( props ) => {
+		const { name, attributes } = props;
+		if ( name !== 'core/table' ) {
+			return <BlockListBlock { ...props } />;
+		}
+
+		const { highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor } = attributes;
+
+		const wrapperProps = {
+			...props.wrapperProps,
+			'data-table-colors': '',
+			style: {
+				...props.wrapperProps?.style,
+				'--table-header-bg': headerBackgroundColor,
+				'--table-first-col-bg': firstColumnBackgroundColor,
+				...( highlightedColumn ? { '--table-highlight-col-bg': highlightedColumnColor || '#eef8ea' } : {} ),
+			},
+			...( highlightedColumn ? { 'data-highlight-col': highlightedColumn } : {} ),
+		};
+
+		return <BlockListBlock { ...props } wrapperProps={ wrapperProps } />;
+	};
+}, 'withTableBlockProps' );
+addFilter(
+	'editor.BlockListBlock',
+	'block-mods/table-block/add-block-props',
+	addBlockProps,
+);
+
+/**
  * Add column highlight inspector control to Table block
  */
 const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
@@ -140,38 +173,11 @@ const addInspectorControl = createHigherOrderComponent( ( BlockEdit ) => {
 			attributes: { highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor, head, body },
 			setAttributes,
 			name,
-			clientId,
 		} = props;
 
 		const themeColors = useSelect( ( select ) => {
 			return select( 'core/block-editor' ).getSettings()?.colors ?? [];
 		}, [] );
-
-		// Inject a scoped <style> tag so editor matches front end
-		useEffect( () => {
-			const styleId = `table-column-highlight-${ clientId }`;
-			let style = document.getElementById( styleId );
-			if ( ! style ) {
-				style = document.createElement( 'style' );
-				style.id = styleId;
-				document.head.appendChild( style );
-			}
-			const rules = [];
-			if ( headerBackgroundColor ) {
-				rules.push( `[data-block="${ clientId }"] table thead th { background-color: ${ headerBackgroundColor }; }` );
-			}
-			if ( firstColumnBackgroundColor ) {
-				rules.push( `[data-block="${ clientId }"] table td:first-child { background-color: ${ firstColumnBackgroundColor }; }` );
-			}
-			if ( highlightedColumn ) {
-				const color = highlightedColumnColor || '#eef8ea';
-				rules.push( `[data-block="${ clientId }"] table td:nth-child(${ highlightedColumn }) { background-color: ${ color }; }` );
-				rules.push( `[data-block="${ clientId }"] table thead th:nth-child(${ highlightedColumn }) { display: flex; flex-direction: column; border: none; }` );
-				rules.push( `[data-block="${ clientId }"] table thead th:nth-child(${ highlightedColumn })::before { content: "Best Value"; background-color: yellow; align-self: center; padding: 2px 8px; border-radius: 9999px; font-size: 0.8rem; margin-bottom: var(--wp--preset--spacing--en-space); text-transform: none; letter-spacing: .025em; }` );
-			}
-			style.textContent = rules.join( '\n' );
-			return () => style.remove();
-		}, [ highlightedColumn, highlightedColumnColor, headerBackgroundColor, firstColumnBackgroundColor, clientId ] );
 
 		if ( name !== 'core/table' ) {
 			return <BlockEdit { ...props } />;
