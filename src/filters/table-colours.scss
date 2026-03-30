@@ -19,7 +19,7 @@
 				color: var(--table-highlight-col-color);
 			}
 			thead tr th:nth-child(#{$i})::before {
-				content: "Best Value\A";
+				content: "Best\A";
 				white-space: pre-wrap;
 				color: black;
 				background-color: #f4e501;
